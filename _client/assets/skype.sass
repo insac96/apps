@@ -1,0 +1,96 @@
+.Skype
+  display: flex
+  flex-direction: column
+  width: 100%
+  height: 100vh
+  max-height: 100vh
+  overflow: hidden
+
+  .Header
+    background: #e0faff
+    padding: 8px 12px
+    &__Info
+      display: flex
+      align-items: center
+      margin-bottom: 12px
+      &__Avatar
+        position: relative
+        display: flex
+        align-items: center
+        justify-content: center
+        width: 45px
+        height: 45px
+        max-width: 45px
+        max-height: 45px
+        text-transform: uppercase
+        font-weight: 700
+        font-size: 1.3rem
+        margin-right: 16px
+        background: #0089cb
+        color: #fff
+        border-radius: 50%
+        &::after
+          content: ''
+          position: absolute
+          width: 12px
+          height: 12px
+          border-radius: 50%
+          background: #4dd965
+          bottom: 0
+          right: 0
+      &__Content
+        color: #0089cb
+        p:first-child 
+          font-size: 1.1rem
+          font-weight: 700
+          text-transform: capitalize
+        p:last-child
+          font-size: 0.85rem
+    &__Search
+      display: flex
+      align-items: center
+      justify-content: space-between
+      input, button
+        background: #ffffff
+        color: #000000
+        font-size: 1rem
+      button
+        display: flex
+        align-items: center
+        justify-content: center
+        min-width: 40px
+        min-height: 40px
+        max-width: 40px
+        max-height: 40px
+        &:first-child
+          border-radius: 10px 0 0 10px
+        &:last-child
+          border-radius: 10px
+          margin-left: 10px
+      input
+        width: 100%
+        height: 40px
+        border-radius: 0 10px 10px 0
+
+  .Body
+    flex-grow: 1
+    overflow: auto
+    position: relative
+
+  .Footer
+    display: flex
+    align-items: center
+    justify-content: space-between
+    padding: 12px 50px
+    border-top: 1px solid #eaeaea
+    button
+      background: none
+      color: gray
+      i
+        font-size: 1.8rem
+      p
+        font-size: 0.8rem
+        font-weight: 600
+      &:disabled
+        color: #0089cb !important
+        
