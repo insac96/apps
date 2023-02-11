@@ -66,6 +66,10 @@ export default {
     { path: '/api', handler: path.join(__dirname, './_server/index.js') }
   ],
 
+  server: {
+    port: process.env.PORT || 3000
+  },
+
   watchers: {
     webpack: {
       ignored: [
