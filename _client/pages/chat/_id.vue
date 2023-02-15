@@ -1,7 +1,7 @@
 <template>
   <div class="Skype__Contents">
     <!--Body-->
-    <div class="Skype__Contents__Body">
+    <div class="Skype__Contents__Body" ref="body">
       <div v-for="content in list" :key="content._id">
         <!--Content Friend-->
         <div class="Content-1" v-if="content.person != AuthID">
@@ -9,14 +9,15 @@
           <div class="Content-1__Main">
             <div class="Content-1__Main__Name">{{person.friend.profile.name}}</div>
             <div class="Content-1__Main__Text" @click="RemoveContent(content._id)">{{content.text}}</div>
+            <div class="Content-1__Main__Time">{{$day(content.time).format('hh:mm A')}}</div>
           </div>
         </div>
 
         <!--Content Me-->
         <div class="Content-2" v-if="content.person == AuthID">
           <div class="Content-2__Main">
-            <div class="Content-2__Main__Time">{{$day(content.time).format('hh:mm A')}}</div>
             <div class="Content-2__Main__Text" @click="RemoveContent(content._id)">{{content.text}}</div>
+            <div class="Content-2__Main__Time">{{$day(content.time).format('hh:mm A')}}</div>
           </div>
         </div>
       </div>
@@ -65,6 +66,8 @@ export default {
     this.person.me = chat.result.person_1._id == this.AuthID ? chat.result.person_1 : chat.result.person_2
     this.person.friend = chat.result.person_1._id == this.AuthID ? chat.result.person_2 : chat.result.person_1
     this.list = chat.result.contents
+
+    this.scrollBottom()
   },
 
   methods: {
@@ -79,6 +82,8 @@ export default {
 
       this.list.push(create.result)
       this.text = ''
+
+      this.scrollBottom()
     },
 
     async RemoveContent (id) {
@@ -99,12 +104,19 @@ export default {
       })
 
       if(!!remove.error) return 
-      this.$router.push('/skype/chat')
+      this.$router.push('/chat')
     },
 
     ChangePerson () {
       if(!!this.personContent) return this.personContent = null
       this.personContent = this.person.friend._id
+    },
+
+    scrollBottom () {
+      this.$nextTick(() => {
+        const body = this.$refs.body
+        body.scrollTo(0, body.scrollHeight)
+      })
     }
   }
 }
@@ -123,6 +135,7 @@ export default {
     flex-grow: 1
     overflow: auto
     padding: 12px
+    scroll-behavior: smooth
 
     .Content-1
       display: flex
@@ -158,6 +171,12 @@ export default {
           border-radius: 0 12px 12px 12px
           box-shadow: 0 5px 15px -10px rgba(0,0,0,0.5)
           cursor: pointer
+        &__Time
+          font-size: 0.6rem
+          font-weight: 600
+          color: gray
+          margin-top: 5px
+          text-align: right
 
     .Content-2
       display: flex
@@ -165,11 +184,6 @@ export default {
       margin-bottom: 12px
       &__Main
         text-align: right
-        &__Time
-          font-size: 0.7rem
-          font-weight: 600
-          color: gray
-          margin-bottom: 5px
         &__Text
           display: inline-block
           background: #e0faff
@@ -179,6 +193,11 @@ export default {
           box-shadow: 0 5px 15px -10px rgba(0,0,0,0.5)
           text-align: left
           cursor: pointer
+        &__Time
+          font-size: 0.6rem
+          font-weight: 600
+          color: gray
+          margin-top: 5px
 
   &__Footer
     display: flex

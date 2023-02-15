@@ -1,40 +1,28 @@
 const UserDB = require('../../database/_user')
 const ChatDB = require('../../database/_chat')
 
+// Get All Chat
 export const GetChats = async (req, res, next) => {
   try {
     const { id } = req.auth
 
     const chats = await ChatDB
-    .find({
-      $or: [{ person_1: id }, { person_2: id }]
-    })
+    .find(
+      { $or: [{ person_1: id }, { person_2: id }] },
+      { contents: { $slice: -1 } }
+    )
     .populate({ path: 'person_1', select: 'profile' })
     .populate({ path: 'person_2', select: 'profile' })
     .exec()
 
-    const newList = chats.map(item => {
-      if(item.person_1._id == id){
-        item.person = item.person_2
-      }
-      else if(item.person_2._id == id){
-        item.person = item.person_1
-      }
-
-      return {
-        _id: item._id,
-        person: item.person,
-        content: item.contents[item.contents.length - 1]
-      }
-    })
-
-    next({ result: newList })
+    next({ result: chats, message: 'Lấy danh sách cuộc trò chuyện thành công' })
   }
   catch (err) {
     next({ error: true, at: 'get-chats', ...err })
   }
 }
 
+// Get Chat By ID
 export const GetChatByID = async (req, res, next) => {
   try {
     const { id } = req.auth
@@ -49,13 +37,14 @@ export const GetChatByID = async (req, res, next) => {
     if(!chat) throw { message: 'Cuộc trò chuyện không tồn tại' }
     if(chat.person_1._id != id && chat.person_2._id != id) throw { message: 'Bạn không được phép truy cập cuộc trò chuyện này' }
 
-    next({ result: chat })
+    next({ result: chat, message: 'Lấy dữ liệu cuộc trò chuyện thành công' })
   }
   catch (err) {
     next({ error: true, at: 'get-chat', ...err })
   }
 }
 
+// Create New Chat
 export const CreateChat = async (req, res, next) => {
   try {
     const { id } = req.auth
@@ -77,16 +66,16 @@ export const CreateChat = async (req, res, next) => {
       person_1: id,
       person_2: person
     })
-
     await newChat.save()
 
-    next({ result: newChat._id })
+    next({ result: newChat._id, message: 'Khởi tạo cuộc trò chuyện thành công' })
   }
   catch (err) {
     next({ error: true, at: 'get-chat', ...err })
   }
 }
 
+// Remove Chat
 export const RemoveChat = async (req, res, next) => {
   try {
     const { id } = req.auth
@@ -109,10 +98,13 @@ export const RemoveChat = async (req, res, next) => {
   }
 }
 
+// Create New Content Of Chat
 export const CreateContent = async (req, res, next) => {
   try {
     const { id } = req.auth
     const { chatID, person, text } = req.body
+
+    if(!text) throw { message: 'Nội dung đang để trống' } 
 
     const chat = await ChatDB
     .findById(chatID)
@@ -120,7 +112,7 @@ export const CreateContent = async (req, res, next) => {
 
     if(!chat) throw { message: 'Cuộc trò chuyện không tồn tại' }
     if(chat.person_1 != id && chat.person_2 != id) throw { message: 'Bạn không được phép truy cập cuộc trò chuyện này' }
-
+    
     chat.contents.push({
       person: !!person ? person : id,
       text: text,
@@ -128,6 +120,8 @@ export const CreateContent = async (req, res, next) => {
     await chat.save()
 
     const newContent = chat.contents[chat.contents.length - 1]
+    chat.update = newContent.time
+    await chat.save()
 
     next({ result: newContent, message: 'Gửi tin nhắn thành công' })
   }
@@ -136,6 +130,7 @@ export const CreateContent = async (req, res, next) => {
   }
 }
 
+// Remove Content Of Chat
 export const RemoveContent = async (req, res, next) => {
   try {
     const { id } = req.auth
@@ -160,3 +155,4 @@ export const RemoveContent = async (req, res, next) => {
     next({ error: true, at: 'get-chat', ...err })
   }
 }
+

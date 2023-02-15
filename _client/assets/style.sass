@@ -1,3 +1,5 @@
+@import '_root'
+
 *
   margin: 0
   padding: 0
@@ -7,12 +9,21 @@
   user-select: none
   -webkit-tap-highlight-color: transparent !important
 
+html
+  font-size: var(--font-size-root)
+
 body
-  font-family: 'Quicksand', sans-serif
+  font-family: var(--font-family)
+  font-size: var(--font-size)
+  background: rgb(var(--background))
+  color: rgb(var(--text))
 
 input, button
   font-family: inherit
+  background: none
 
 button
   cursor: pointer
-  user-select: none
+
+@import '_space'
+@import '_effect'

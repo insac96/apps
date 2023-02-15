@@ -1,32 +1,59 @@
 <template>
   <div class="Skype__Chats">
-    <div class="Chat" v-for="chat in list" :key="chat._id" @click="$router.push(`/skype/${chat._id}`)">
-      <div class="Chat__Avatar">{{ chat.person.profile.name.charAt(0) }}</div>
+    <div class="Chat" v-for="chat in sortList" :key="chat._id" @click="$router.push(`/chat/${chat._id}`)">
+      <div class="Chat__Avatar">{{ chat.friend.profile.name.charAt(0) }}</div>
       <div class="Chat__Content">
-        <p>{{ chat.person.profile.name }}</p>
+        <p>{{ chat.friend.profile.name }}</p>
         <p>{{ chat.content ? chat.content.text : 'Không có tin nhắn mới' }}</p>
       </div>
-      <div class="Chat__Time" v-if="!!chat.content">{{ $day(chat.content.time).format('hh:mm A') }}</div>
+      <div class="Chat__Time" v-if="!!chat.content">{{ $day(chat.update).fromNow(true) }}</div>
     </div>
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
   data () {
     return {
       list: []
     }
   },
+
+  computed: {
+    sortList () {
+      return this.list
+      .map(item => {
+        const friend = (item.person_1._id == this.AuthID) ? item.person_2 : item.person_1
+        const content = item.contents[0]
+
+        delete item['person_1']
+        delete item['person_2']
+        delete item['contents']
+        
+        return {
+          friend: friend,
+          content: content,
+          ...item
+        }
+      })
+      .sort((a, b) => {
+        return a.update > b.update ? -1 : 1
+      })
+    },
+
+    ...mapGetters({
+      'AuthID': 'auth/getID'
+    })
+  },
   
   async fetch() {
-    const chats = await this.$axios.$get('/chat/get/list')
+    const chats = await this.$axios.$get('/chat/get/all')
     if(!!chats.error) return
 
     this.list = chats.result
-  },
-
-  fetchOnServer: false
+  }
 }
 </script>
 

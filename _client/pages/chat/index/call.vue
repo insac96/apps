@@ -1,8 +1,9 @@
 <template>
-  <div class="Skype__Contacts">
-    <div class="Contact" v-for="contact in list" :key="contact._id" @click="CreateChat(contact._id)">
-      <div class="Contact__Avatar">{{ contact.profile.name.charAt(0) }}</div>
-      <div class="Contact__Content">{{ contact.profile.name }}</div>
+  <div class="Skype__Calls">
+    <div class="Call" v-for="call in list" :key="call._id" @click="CreateChat(call._id)">
+      <div class="Call__Avatar">{{ call.profile.name.charAt(0) }}</div>
+      <div class="Call__Content">{{ call.profile.name }}</div>
+      <div class="Call__Icon"><i class='bx bx-phone' ></i></div>
     </div>
   </div>
 </template>
@@ -28,7 +29,7 @@ export default {
         person: personID
       })
 
-      this.$router.push(`/skype/${create.result}`)
+      this.$router.push(`/chat/${create.result}`)
 
       if(!!create.error) return
     }
@@ -37,7 +38,7 @@ export default {
 </script>
 
 <style lang="sass">
-.Contact
+.Call
   display: flex
   align-items: center
   padding: 12px
@@ -63,4 +64,7 @@ export default {
     font-size: 1rem
     font-weight: 500
     text-transform: capitalize
+  &__Icon
+    font-size: 1.4em
+    color: gray
 </style>

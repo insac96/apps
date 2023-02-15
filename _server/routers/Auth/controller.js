@@ -1,5 +1,5 @@
 import md5 from 'md5'
-import { CreateToken, CreateCookie, RemoveCookie } from '../../utils'
+import { CreateToken, CreateCookie, RemoveCookie, ValidateCheck } from '../../utils'
 const UserDB = require('../../database/_user')
 
 // Get User By Auth
@@ -27,6 +27,9 @@ export const GetUserByAuth = async (req, res, next) => {
 export const SignIn = async (req, res, next) => {
   try {
     const { username, password } = req.body
+
+    // Validate Check
+    ValidateCheck(req)
     
     // Get User by Username and Check
     const user = await UserDB
@@ -62,6 +65,9 @@ export const SignIn = async (req, res, next) => {
 export const SignUp = async (req, res, next) => {
   try {
     const { username, password } = req.body
+
+    // Validate Check
+    ValidateCheck(req)
     
     // Get User by Username and Check
     const user = await UserDB

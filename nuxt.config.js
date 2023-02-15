@@ -31,6 +31,7 @@ export default {
   plugins: [
     { src: '~/plugins/axios.js' },
     { src: '~/plugins/day.js' },
+    { src: '~/plugins/color.js' },
   ],
 
   router: {

@@ -1,15 +1,19 @@
 <template>
   <div class="Home">
-    <div class="Sign">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Skype_logo_%282019%E2%80%93present%29.svg/991px-Skype_logo_%282019%E2%80%93present%29.svg.png">
-      <div class="Sign__Message" v-if="!!message">{{ message }}</div>
-      <input type="text" placeholder="Tài khoản" v-model="username" />
-      <input type="password" placeholder="Mật khẩu" v-model="password"/>
-      <div>
-        <button class="Sign__In" @click="SignIn">Đăng Nhập</button>
-        <button class="Sign__Up" @click="SignUp">Đăng Ký</button>
-      </div>
-    </div>
+    <UiDialog v-model="dialog">
+      <UiFlex type="column">
+        <UiText size="1.3rem" weight="700" color="primary">Xác Thực</UiText>
+        <UiText size="0.8rem" class="mb-1" color="gray">{{ message }}</UiText>
+
+        <UiInput type="text" class="mb-1" placeholder="Tài khoản" v-model="username" width="100%" icon-left="bx-user"></UiInput>
+        <UiInput type="password" class="mb-1" placeholder="Mật khẩu" v-model="password" width="100%" icon-left="bx-lock"></UiInput>
+        
+        <UiFlex justify="flex-end" width="100%">
+          <UiButton @click="SignIn" radius="var(--radius) 0 0 var(--radius)">Đăng Nhập</UiButton>
+          <UiButton @click="SignUp" radius="0 var(--radius) var(--radius) 0" b-color="content-1" t-color="primary">Đăng Ký</UiButton>
+        </UiFlex>
+      </UiFlex>
+    </UiDialog>
   </div>
 </template>
 
@@ -20,8 +24,9 @@ export default {
   data () {
     return {
       username: 'insac96',
-      password: 'cf1996',
-      message: ''
+      password: '',
+      message: 'Vui lòng xác thực để sử dụng dịch vụ',
+      dialog: true
     }
   },
 
@@ -35,7 +40,7 @@ export default {
       this.message = signin.message
 
       if(!!signin.error) return
-      this.$router.push('/skype/chat')
+      this.$router.push('/chat')
     },
 
     async SignUp () {
@@ -47,12 +52,22 @@ export default {
       this.message = signup.message
 
       if(!!signup.error) return
-      this.$router.push('/skype/chat')
+      this.$router.push('/chat')
     }
   }
 }
 </script>
 
 <style lang="sass">
-@import '@/assets/home.sass'
+.Home
+  display: flex
+  align-items: center
+  justify-content: center
+  width: 100%
+  height: 100vh
+  max-height: 100vh
+  overflow: hidden
+  .Sign
+    width: 100%
+    max-width: 300px
 </style>

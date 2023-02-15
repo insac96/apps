@@ -26,17 +26,17 @@
 
     <!--Footer-->
     <div class="Footer">
-      <button @click="$router.push('/skype/chat')" :disabled="$route.path == '/skype/chat'">
+      <button @click="$router.push('/chat')" :disabled="$route.path == '/chat'">
         <i class='bx bxs-message-rounded-detail'></i>
         <p>Trò chuyện</p>
       </button>
 
-      <button @click="$router.push('/skype/call')" :disabled="$route.path == '/skype/call'">
+      <button @click="$router.push('/chat/call')" :disabled="$route.path == '/chat/call'">
         <i class='bx bxs-phone' ></i>
         <p>Cuộc gọi</p>
       </button>
 
-      <button @click="$router.push('/skype/contact')" :disabled="$route.path == '/skype/contact'">
+      <button @click="$router.push('/chat/contact')" :disabled="$route.path == '/chat/contact'">
         <i class='bx bxs-contact' ></i>
         <p>Danh bạ</p>
       </button>
@@ -57,5 +57,5 @@ export default {
 </script>
 
 <style lang="sass">
-@import '@/assets/skype.sass'
+@import '@/assets/chat.sass'
 </style>

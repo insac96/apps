@@ -8,9 +8,10 @@ const ChatSchema = new Schema({
     {
       person: { type: Schema.Types.ObjectId, required: true, ref: 'Users' },
       text: { type: String, required: true },
-      time: { type: Date, default: Date.now(), required: true }
+      time: { type: Date, default: Date.now, required: true }
     }
-  ]
+  ],
+  update: { type: Date, default: Date.now, required: true }
 })
 
 module.exports = mongoose.model('Chats', ChatSchema)
