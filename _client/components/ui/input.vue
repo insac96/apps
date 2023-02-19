@@ -1,12 +1,11 @@
 <template>
   <div
-    :class="[
-      'Input',
-      {
-        'Input--Disabled': !!disabled,
-        'Input--Loading': !!loading
-      }
-    ]"
+    :class="{
+      'Input': true,
+      'Input--Disabled': !!disabled,
+      'Input--Loading': !!loading,
+      'Shadow': !!shadow
+    }"
     :style="{
       'display': !!inline ? 'inline-flex' : 'flex',
       '--ui-input-width': width,
@@ -52,13 +51,14 @@ export default {
     'readOnly': { type: Boolean },
 
     'inline': { type: Boolean },
-    'width': { type: String || Number },
-    'height': { type: String || Number },
+    'width': { type: String },
+    'height': { type: String },
     'bColor': { type: String },
     'tColor': { type: String },
     'alpha': { type: String || Number },
     'space': { type: String || Number },
     'radius': { type: String || Number },
+    'shadow': { type: Boolean },
 
     'disabled': { type: Boolean },
     'loading': { type: Boolean },

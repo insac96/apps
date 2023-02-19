@@ -1,12 +1,11 @@
 <template>
   <button
-    :class="[
-      'Btn',
-      {
-        'Btn--Disabled': !!disabled,
-        'Btn--Loading': !!loading
-      }
-    ]"
+    :class="{
+      'Btn': true,
+      'Btn--Disabled': !!disabled,
+      'Btn--Loading': !!loading,
+      'Shadow': !!shadow
+    }"
     :style="{
       '--ui-btn-width': width,
       '--ui-btn-height': height,
@@ -26,13 +25,14 @@
 <script>
 export default {
   props : {
-    'width': { type: String || Number },
-    'height': { type: String || Number },
+    'width': { type: String },
+    'height': { type: String },
     'bColor': { type: String },
     'tColor': { type: String },
     'alpha': { type: String || Number },
     'space': { type: String || Number },
-    'radius': { type: String || Number },
+    'radius': { type: String },
+    'shadow': { type: Boolean },
 
     'disabled': { type: Boolean },
     'loading': { type: Boolean },

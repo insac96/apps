@@ -1,14 +1,15 @@
 <template>
-  <span 
+  <p 
     class="Text"
     :style="{
       'color': `rgb(${$color.get(color)})`,
       'font-size': size,
-      'font-weight': weight
+      'font-weight': weight,
+      'text-align': align
     }
   ">
     <slot></slot>
-  </span>
+  </p>
 </template>
 
 <script>
@@ -16,7 +17,8 @@ export default {
   props: {
     'weight': { type: String },
     'size': { type: String },
-    'color': { type: String }
+    'color': { type: String },
+    'align': { type: String }
   }
 }
 </script>

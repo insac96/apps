@@ -1,8 +1,7 @@
 <template>
   <transition name="show">
     <div 
-      v-if="!!active"
-      ref="dialog"
+      v-show="!!isShow"
       :class="{
         'Dialog': true,
         'Dialog--Center': !bottom && !top,
@@ -36,34 +35,55 @@ export default {
     event: 'change'
   },
 
-  mounted(){
-    this.insertBody()
+  data () {
+    return {
+      isShow: false
+    }
   },
 
-  beforeDestroy() {
-    this.removeBody()
+  mounted () {
+    if(!!this.active) {
+      this.open()
+    }
+  },
+
+  beforeDestroy () {
+    if (this.$el && this.$el.parentNode) {
+      this.$el.parentNode.removeChild(this.$el)
+    }
+  },
+
+  watch: {
+    active (newVal) {
+      if(!!newVal){
+        this.open()
+      }
+      else {
+        this.close()
+      }
+    }
   },
 
   methods: {
+    open () {
+      this.isShow = true
+      this.$emit('change', true)
+      this.$emit('open')
+
+      this.$nextTick(() => {
+        document.body.insertBefore(this.$el, document.body.lastChild)
+        document.body.style.overflow = 'hidden'
+      })
+    },
+
     close () {
+      this.isShow = false
       this.$emit('change', false)
       this.$emit('close')
-    },
 
-    insertBody () {
-      let dialog = this.$refs.dialog
-
-      if(!!document && document.body){
-        document.body.insertBefore(dialog, document.body.lastChild)
-      }
-    },
-
-    removeBody () {
-      let dialog = this.$refs.dialog
-
-      if(!!document && document.body){
-        document.body.removeChild(dialog)
-      }
+      this.$nextTick(() => {
+        document.body.style.overflow = ''
+      })
     }
   }
 }
@@ -71,11 +91,11 @@ export default {
 
 <style lang="sass">
 .Dialog
-  position: absolute
-  width: 100%
-  height: 100%
+  position: fixed
   top: 0
   left: 0
+  width: 100%
+  height: 100%
   display: flex
   justify-content: center
   padding: var(--space)
@@ -109,17 +129,17 @@ export default {
         
 .show-enter-active 
   &.Dialog--Center
-    --ui-dialog-animation: zoom-effect .25s cubic-bezier(.3, .5 , 0 , 1.5) forwards
+    --ui-dialog-animation: zoom-effect .25s ease forwards
   &.Dialog--Bottom
-    --ui-dialog-animation: up-effect .25s cubic-bezier(.3, .5 , 0 , 1.5) forwards
+    --ui-dialog-animation: up-effect .25s ease forwards
   &.Dialog--Top
-    --ui-dialog-animation: down-effect .25s cubic-bezier(.3, .5 , 0 , 1.5) forwards
+    --ui-dialog-animation: down-effect .25s ease forwards
 
 .show-leave-active 
   &.Dialog--Center
-    --ui-dialog-animation: zoom-effect .25s reverse cubic-bezier(.3, .5 , 0 , 1.5) forwards
+    --ui-dialog-animation: zoom-effect .25s reverse ease forwards
   &.Dialog--Bottom
-    --ui-dialog-animation: up-effect .25s reverse cubic-bezier(.3, .5 , 0 , 1.5) forwards
+    --ui-dialog-animation: up-effect .25s reverse ease forwards
   &.Dialog--Top
-    --ui-dialog-animation: down-effect .25s reverse cubic-bezier(.3, .5 , 0 , 1.5) forwards
+    --ui-dialog-animation: down-effect .25s reverse ease forwards
 </style>

@@ -34,8 +34,8 @@ export const GetChatByID = async (req, res, next) => {
     .populate({ path: 'person_2', select: 'profile' })
     .exec()
 
-    if(!chat) throw { message: 'Cuộc trò chuyện không tồn tại' }
-    if(chat.person_1._id != id && chat.person_2._id != id) throw { message: 'Bạn không được phép truy cập cuộc trò chuyện này' }
+    if(!chat) throw { status: 404, message: 'Cuộc trò chuyện không tồn tại' }
+    if(chat.person_1._id != id && chat.person_2._id != id) throw { status: 403, message: 'Bạn không được phép truy cập cuộc trò chuyện này' }
 
     next({ result: chat, message: 'Lấy dữ liệu cuộc trò chuyện thành công' })
   }
@@ -86,8 +86,8 @@ export const RemoveChat = async (req, res, next) => {
     .select('_id person_1 person_2')
     .exec()
 
-    if(!chat) throw { message: 'Cuộc trò chuyện không tồn tại' }
-    if(chat.person_1 != id && chat.person_2 != id) throw { message: 'Bạn không được phép truy cập cuộc trò chuyện này' }
+    if(!chat) throw { status: 404, message: 'Cuộc trò chuyện không tồn tại' }
+    if(chat.person_1 != id && chat.person_2 != id) throw { status: 403, message: 'Bạn không được phép truy cập cuộc trò chuyện này' }
 
     await ChatDB.deleteOne({ '_id': chatID })
 
@@ -110,8 +110,8 @@ export const CreateContent = async (req, res, next) => {
     .findById(chatID)
     .exec()
 
-    if(!chat) throw { message: 'Cuộc trò chuyện không tồn tại' }
-    if(chat.person_1 != id && chat.person_2 != id) throw { message: 'Bạn không được phép truy cập cuộc trò chuyện này' }
+    if(!chat) throw { status: 404, message: 'Cuộc trò chuyện không tồn tại' }
+    if(chat.person_1 != id && chat.person_2 != id) throw { status: 403, message: 'Bạn không được phép truy cập cuộc trò chuyện này' }
     
     chat.contents.push({
       person: !!person ? person : id,
@@ -141,8 +141,8 @@ export const RemoveContent = async (req, res, next) => {
     .select('_id person_1 person_2')
     .exec()
 
-    if(!chat) throw { message: 'Cuộc trò chuyện không tồn tại' }
-    if(chat.person_1 != id && chat.person_2 != id) throw { message: 'Bạn không được phép truy cập cuộc trò chuyện này' }
+    if(!chat) throw { status: 404, message: 'Cuộc trò chuyện không tồn tại' }
+    if(chat.person_1 != id && chat.person_2 != id) throw { status: 403, message: 'Bạn không được phép truy cập cuộc trò chuyện này' }
 
     await ChatDB.updateOne(
       { '_id': chatID }, 

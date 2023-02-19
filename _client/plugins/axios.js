@@ -1,12 +1,17 @@
 export default function ({ $axios, store }) {
   $axios.onResponse(response => {
+    const data = response.data
+
+    if(!data.error) return
+    if(data.status == 200) return
+
     // Auth Error
-    if(response.status == 401){
-
+    if(data.status == 401){
+      store.commit('dialog/openSign')
     }
-    // Server Error
-    else if(response.status == 503){
-
+    // Other Error
+    else {
+      store.commit('dialog/openError', data)
     }
   })
 }

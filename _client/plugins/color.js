@@ -46,7 +46,7 @@ const color = {
       'primary','success','danger','warn',
       'dark','light','gray',
       'background','text',
-      'content-1'
+      'content-1', 'content-2'
     ]
     return vars.includes(color)
   },
