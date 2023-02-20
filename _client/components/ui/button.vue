@@ -9,12 +9,13 @@
     :style="{
       '--ui-btn-width': width,
       '--ui-btn-height': height,
-      '--ui-btn-bg': $color.get(bColor),
-      '--ui-btn-text': $color.get(tColor),
+      '--ui-btn-bg': GetColor(bColor),
+      '--ui-btn-text': GetColor(tColor),
       '--ui-btn-alpha': alpha,
       '--ui-btn-space': space,
       '--ui-btn-radius': radius
     }"
+    :disabled="disabled"
     v-on="$listeners"
     v-bind="$attrs"
   >
@@ -30,12 +31,17 @@ export default {
     'bColor': { type: String },
     'tColor': { type: String },
     'alpha': { type: String || Number },
-    'space': { type: String || Number },
+    'space': { type: String },
     'radius': { type: String },
     'shadow': { type: Boolean },
 
     'disabled': { type: Boolean },
     'loading': { type: Boolean },
+  },
+  methods: {
+    GetColor (color) {
+      return this.$color.get(color)
+    }
   }
 }
 </script>

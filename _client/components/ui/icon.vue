@@ -2,7 +2,7 @@
   <i 
     :class="['Icon', 'bx', `${src}`]"
     :style="{
-      'color': `rgb(${$color.get(color)})`,
+      'color': `rgb(${GetColor(color)})`,
       'font-size': size 
     }"
   ></i>
@@ -14,6 +14,11 @@ export default {
     'src': { type: String },
     'color': { type: String },
     'size': { type: String },
+  },
+  methods: {
+    GetColor (color) {
+      return this.$color.get(color)
+    }
   }
 }
 </script>

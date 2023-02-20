@@ -10,8 +10,8 @@
       'display': !!inline ? 'inline-flex' : 'flex',
       '--ui-input-width': width,
       '--ui-input-height': height,
-      '--ui-input-bg': $color.get(bColor),
-      '--ui-input-text': $color.get(tColor),
+      '--ui-input-bg': GetColor(bColor),
+      '--ui-input-text': GetColor(tColor),
       '--ui-input-alpha': alpha,
       '--ui-input-space': space,
       '--ui-input-radius': radius
@@ -30,7 +30,7 @@
       :placeholder="placeholder"
       :readonly="readonly"
       :disabled="disabled"
-      @input="onInput"
+      @input="OnInput"
     >
 
     <UiIcon 
@@ -73,9 +73,12 @@ export default {
   },
 
   methods: {
-    onInput (e) {
+    OnInput (e) {
       this.$emit('change', e.target.value)
       this.$emit('input', e.target.value)
+    },
+    GetColor (color) {
+      return this.$color.get(color)
     }
   }
 }

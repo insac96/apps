@@ -1,5 +1,9 @@
 <template>
   <div class="LayoutDefault">
+    <!--Header-->
+    <LayoutHeader></LayoutHeader>
+
+    <!--Body-->
     <Nuxt></Nuxt>
 
     <!--Sign Dialog-->

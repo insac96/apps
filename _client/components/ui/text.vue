@@ -2,7 +2,7 @@
   <p 
     class="Text"
     :style="{
-      'color': `rgb(${$color.get(color)})`,
+      'color': `rgb(${GetColor(color)})`,
       'font-size': size,
       'font-weight': weight,
       'text-align': align
@@ -19,6 +19,11 @@ export default {
     'size': { type: String },
     'color': { type: String },
     'align': { type: String }
+  },
+  methods: {
+    GetColor (color) {
+      return this.$color.get(color)
+    }
   }
 }
 </script>

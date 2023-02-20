@@ -12,8 +12,7 @@
       'flex-direction': type,
       'flex-wrap': wrap,
       'width': width,
-      'height': height,
-      'background': `rgb(${$color.get(bColor)})`
+      'height': height
     }"
   >
     <slot></slot>
@@ -30,8 +29,7 @@ export default {
     'wrap': { type: String },
     'width': { type: String },
     'height': { type: String },
-    'group': { type: Boolean },
-    'bColor': { type: String }
+    'group': { type: Boolean }
   }
 }
 </script>
